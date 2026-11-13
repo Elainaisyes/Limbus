@@ -21,8 +21,7 @@ class ClickButton(Basic_Image):
         self.time_since_last_click = 0
         self.game.coins += self.game.coins_per_click
         self.click_amount += 1
-        mouse_pos = pygame.mouse.get_pos()
-        particle = Basic_Image(self.original_image, mouse_pos[0], mouse_pos[1], self.window, self.game, self.click_particles, scale=random.uniform(0.2,0.4))
+        particle = Basic_Image(self.original_image, self.game.mouse_pos[0], self.game.mouse_pos[1], self.window, self.game, self.click_particles, scale=random.uniform(0.2,0.4))
         particle.direction.x = random.uniform(-3,3)
         particle.direction.y = -8
         particle.rotation = random.randint(0,360)

@@ -9,8 +9,8 @@ class Basic_Image(pygame.sprite.Sprite):
         self.image = image
         self.pos = pygame.math.Vector2(x, y)
 
-        self.base_width = width if width is not None else self.original_image.get_width()
-        self.base_height = height if height is not None else self.original_image.get_height()
+        self.base_width = width
+        self.base_height = height
         self.window = window
         self.game = game
         self.scale = scale
@@ -19,7 +19,7 @@ class Basic_Image(pygame.sprite.Sprite):
         self.color = color
         self.rect = self.image.get_rect()
         self.visible = True
-        self.direction = pygame.math.Vector2(1,0)
+        self.direction = pygame.math.Vector2(1, 0)
 
         self.refresh_image()
 
@@ -27,8 +27,15 @@ class Basic_Image(pygame.sprite.Sprite):
         center = self.rect.center if hasattr(self, "rect") else (0, 0)
 
         image = self.original_image.copy()
-
         image = pygame.transform.rotozoom(image, -self.rotation, self.scale)
+
+        if self.base_width is not None or self.base_height is not None:
+            target_width = self.base_width if self.base_width is not None else image.get_width()
+            target_height = self.base_height if self.base_height is not None else image.get_height()
+            image = pygame.transform.smoothscale(
+                image,
+                (max(1, int(target_width)), max(1, int(target_height)))
+            )
 
         if self.alpha != 255:
             image = image.copy()
