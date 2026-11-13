@@ -12,19 +12,22 @@ class ClickButton(Basic_Image):
         self.target_rotation = rotation
 
         self.click_particles = pygame.sprite.Group()
+
+        self.click_sfx = pygame.mixer.Sound('assets/audios/sfx/blip.mp3')
     
     def click(self):
         self.target_rotation = random.randint(-15,15)
         self.set_scale(self.default_scale * 1.15)
         self.time_since_last_click = 0
-        self.game.points += self.game.clicks_per_click
+        self.game.coins += self.game.coins_per_click
         self.click_amount += 1
         mouse_pos = pygame.mouse.get_pos()
         particle = Basic_Image(self.original_image, mouse_pos[0], mouse_pos[1], self.window, self.game, self.click_particles, scale=random.uniform(0.2,0.4))
-        particle.direction.x = random.uniform(-1,1)
+        particle.direction.x = random.uniform(-3,3)
         particle.direction.y = -8
         particle.rotation = random.randint(0,360)
         particle.set_rotation(particle.rotation)
+        self.game.audio_manager.play_sound(self.click_sfx, 0.35)
 
     def loop(self):
         self.time_since_last_click += 1
