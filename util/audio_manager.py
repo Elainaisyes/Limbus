@@ -3,10 +3,9 @@ import pygame, time
 class Audio_Manager():
     def __init__(self):
         self.BACKGROUND_MUSIC = {
-            "menu": {"path": "assets/audios/bgm/Echos of Distant Days.mp3", "volume": 0.5, "last_position": 0.0},
-            "game": {"path": "assets/audios/bgm/UN-Owen-Was-Her.mp3", "volume": 0.75, "last_position": 0.0},
-            "game_alternate": {"path": "assets/audios/bgm/Septette for the Dead Princess.mp3", "volume": 0.75, "last_position": 0.0},
-            "gameover": {"path": "assets/audios/bgm/sins 13.mp3", "volume": 1, "last_position": 0.0}
+            "clickarea_default": {"path": "assets/audios/bgms/lobby.mp3", "volume": 0.75, "last_position": 0.0},
+            "clickarea_rush": {"path": "assets/audios/bgms/rush.mp3", "volume": 0.75, "last_position": 0.0},
+            "brown_square_boss": {"path": "assets/audios/bgms/paint_the_world_purple.mp3", "volume": 0.75, "last_position": 0.0},
         }
 
         self.current_track = None
@@ -19,12 +18,10 @@ class Audio_Manager():
 
     #time.monotonic() used to calculate the amount of milliseconds elapsed since the last time position update.
     def get_current_position(self):
-        global current_track
-
-        if not current_track:
+        if not self.current_track:
             return 0.0
 
-        track = self.BACKGROUND_MUSIC[current_track]
+        track = self.BACKGROUND_MUSIC[self.current_track]
 
         if not pygame.mixer.music.get_busy():
             return track["last_position"]
@@ -33,19 +30,17 @@ class Audio_Manager():
         return track["last_position"] + elapsed
 
     def play_bgm(self, track_key, loops=-1, start=0.0, fade_ms=2000, resume=True):
-        global current_track
-
-        if current_track == track_key and not pygame.mixer.music.get_busy() and resume:
+        if self.current_track == track_key and not pygame.mixer.music.get_busy() and resume:
             pygame.mixer.music.unpause()
             return
 
-        if current_track and current_track != track_key:
-            track = self.BACKGROUND_MUSIC[current_track]
+        if self.current_track and self.current_track != track_key:
+            track = self.BACKGROUND_MUSIC[self.current_track]
             track["last_position"] = self.get_current_position()
             track["last_position_time"] = time.monotonic()
 
         track = self.BACKGROUND_MUSIC[track_key]
-        current_track = track_key
+        self.current_track = track_key
 
         if resume:
             pos = track["last_position"]
@@ -60,17 +55,15 @@ class Audio_Manager():
         pygame.mixer.music.play(loops=loops, start=pos, fade_ms=fade_ms)
 
     def pause_bgm(self, fadeout_ms=750):
-        global current_track
-        if current_track:
-            track = self.BACKGROUND_MUSIC[current_track]
+        if self.current_track:
+            track = self.BACKGROUND_MUSIC[self.current_track]
             track["last_position"] = self.get_current_position()
             track["last_position_time"] = time.monotonic()
             pygame.mixer.music.fadeout(fadeout_ms)
 
     def resume_bgm(self):
-        global current_track
-        if current_track:
-            track = self.BACKGROUND_MUSIC[current_track]
+        if self.current_track:
+            track = self.BACKGROUND_MUSIC[self.current_track]
             pos = track["last_position"]
             track["last_position_time"] = time.monotonic()
 

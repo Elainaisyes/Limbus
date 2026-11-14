@@ -4,8 +4,9 @@ from classes.Basic_Image import Basic_Image
 from util.lerp import lerp
 
 class ClickButton(Basic_Image):
-    def __init__(self, image, x, y, window, game, *groups, width=None, height=None, scale=1, rotation=0, alpha=255, color=None):
+    def __init__(self, image, x, y, window, game, *groups, width=None, height=None, scale=1, rotation=0, alpha=255, color=None, area=None):
         super().__init__(image, x, y, window, game, *groups, width=width, height=height, scale=scale, rotation=rotation, alpha=alpha, color=color)
+        self.area = area
         self.click_amount = 0
         self.time_since_last_click = 0
         self.default_scale = scale
@@ -27,6 +28,9 @@ class ClickButton(Basic_Image):
         particle.rotation = random.randint(0,360)
         particle.set_rotation(particle.rotation)
         self.game.audio_manager.play_sound(self.click_sfx, 0.35)
+        if random.randint(1,10) == 1 and self.game.background_type != "rush":
+            self.game.in_rush = True
+            self.game.set_background("clickarea", "rush", 3, False)
 
     def loop(self):
         self.time_since_last_click += 1
