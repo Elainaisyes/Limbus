@@ -34,7 +34,7 @@ class Game:
         self.area = "clickarea"
 
         self.coins = 0
-        self.coins_per_click = 0.01
+        self.coins_per_click = 1
         self.coins_per_second = 0
 
         self.in_rush = False
