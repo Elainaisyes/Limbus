@@ -8,12 +8,12 @@ class Clickarea():
         self.game = game
         self.click_button_image = pygame.image.load("assets/images/dante_button.png").convert_alpha()
         self.click_button = ClickButton(self.click_button_image, WIDTH//2, HEIGHT//2, self.game.window, self.game, scale=1.5, area=self)
+        self.coins_text_color = (255, 255, 80 if self.game.in_rush else 180)
 
     def loop(self):
         self.click_button.loop()
         self.target_background_color = (120,120,120) if not self.game.in_rush else (180,180,80)
-        self.target_text_color = (255,255, 180 if self.game.in_rush else 80)
-        self.coins_text_color = (255, 255, 80 if self.game.in_rush else 180)
+        self.target_text_color = (255,255,80 if self.game.in_rush else 180)
         self.game.background.set_color(lerp_color(self.game.background.color, self.target_background_color, 0.1))
         self.coins_text_color = lerp_color(self.coins_text_color, self.target_text_color, 0.1)
 

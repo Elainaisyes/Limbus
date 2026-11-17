@@ -71,6 +71,12 @@ def draw_text(window, text, font, position, scale=1, alpha=255, color=(255, 255,
                 window.blit(shadow_surface, (text_x + shadow_offset[0], text_y + shadow_offset[1]))
             window.blit(text_surface, (text_x, text_y))
     else:
+        if has_shadow and shadow_surface is not None:
+            shadow_y = y + (total_height - text_surface.get_height()) // 2
+            window.blit(
+                shadow_surface,
+                (x + shadow_offset[0], shadow_y + shadow_offset[1]),
+            )
         window.blit(
             text_surface,
             (x, y + (total_height - text_surface.get_height()) // 2),
