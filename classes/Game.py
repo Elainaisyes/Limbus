@@ -30,7 +30,6 @@ class Game:
         self.font = pygame.font.Font('assets/fonts/pixeloid.sans-bold.ttf', 32)
         self.font_light = pygame.font.Font('assets/fonts/pixeloid.sans.ttf', 32)
 
-
         self.area = "clickarea"
 
         self.coins = 0
@@ -107,8 +106,8 @@ class Game:
     def color_offset(self, color, amount=100):
         return tuple(min(255, max(0, value - amount)) for value in color)
 
-    def draw_text(self, text, font, position, scale=1, alpha=255, color=(255, 255, 255), centered=False, icon=None, icon_at_end=False, icon_color=(255,255,255), icon_rotation=0, has_shadow=True, shadow_color=None, shadow_offset=(3,3)):
-        draw_text(self.window, text, font, position, scale, alpha, color, centered, icon, icon_at_end, icon_color, icon_rotation, has_shadow, shadow_color, shadow_offset)
+    def draw_text(self, text, font, position, scale=1, alpha=255, color=(255, 255, 255), centered=False, icon=None, icon_at_end=False, icon_color=(255,255,255), icon_rotation=0, has_shadow=True, shadow_color=None, shadow_offset=(3,3), rotation=0):
+        draw_text(self.window, text, font, position, scale, alpha, color, centered, icon, icon_at_end, icon_color, icon_rotation, has_shadow, shadow_color, shadow_offset, rotation)
 
     def draw(self):
         self.window.fill((0, 0, 0))

@@ -1,6 +1,6 @@
 import pygame
 
-def draw_text(window, text, font, position, scale=1, alpha=255, color=(255, 255, 255), centered=False, icon=None, icon_at_end=False, icon_color=(255,255,255), icon_rotation=0, has_shadow=True, shadow_color=None, shadow_offset=(2,2)):
+def draw_text(window, text, font, position, scale=1, alpha=255, color=(255, 255, 255), centered=False, align="left", icon=None, icon_at_end=False, icon_color=(255,255,255), icon_rotation=0, has_shadow=True, shadow_color=None, shadow_offset=(2,2), rotation=0):
     text_surface = font.render(str(text), True, color)
     if scale != 1:
         size = (
@@ -8,6 +8,9 @@ def draw_text(window, text, font, position, scale=1, alpha=255, color=(255, 255,
             max(1, round(text_surface.get_height() * scale)),
         )
         text_surface = pygame.transform.smoothscale(text_surface, size)
+
+    if rotation != 0:
+        text_surface = pygame.transform.rotate(text_surface, -rotation)
 
     if alpha < 255:
         text_surface.set_alpha(alpha)
@@ -18,9 +21,13 @@ def draw_text(window, text, font, position, scale=1, alpha=255, color=(255, 255,
     if shadow_surface:
         if scale != 1:
             shadow_surface = pygame.transform.smoothscale(shadow_surface, size)
+        rotated_offset = pygame.math.Vector2(shadow_offset)
+        if rotation != 0:
+            rotated_offset.rotate_ip(rotation)
+            shadow_surface = pygame.transform.rotate(shadow_surface, -rotation)
         if alpha < 255:
             shadow_surface.set_alpha(alpha)
-        shadow_offset = (shadow_offset[0] * scale, shadow_offset[1] * scale)
+        shadow_offset = (round(rotated_offset.x), round(rotated_offset.y))
 
     icon_surface = None
     gap = round(8 * scale) if icon is not None else 0
@@ -51,6 +58,12 @@ def draw_text(window, text, font, position, scale=1, alpha=255, color=(255, 255,
     if centered:
         x = position[0] - total_width // 2
         y = position[1] - total_height // 2
+    elif align == "right":
+        x = position[0] - total_width
+        y = position[1]
+    elif align == "center":
+        x = position[0] - total_width // 2
+        y = position[1]
     else:
         x, y = position
 
