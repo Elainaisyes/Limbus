@@ -1,8 +1,11 @@
 import pygame
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from classes.Game import Game
 
 class Basic_Image(pygame.sprite.Sprite):
-    def __init__(self, image, x, y, window, game, *groups, width=None, height=None, scale=1, rotation=0, alpha=255, color=None):
+    def __init__(self, image, x, y, window, game: Game, *groups, width=None, height=None, scale=1, rotation=0, alpha=255, color=None):
         super().__init__(*groups)
 
         self.original_image = image
@@ -48,6 +51,10 @@ class Basic_Image(pygame.sprite.Sprite):
 
         self.image = image
         self.rect = self.image.get_rect(center=center)
+
+    def set_image(self, image):
+        self.original_image = image
+        self.refresh_image()
 
     def set_scale(self, scale):
         self.scale = scale

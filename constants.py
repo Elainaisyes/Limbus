@@ -20,6 +20,13 @@ BACKGROUNDS = {
             "trail_color": (255, 255, 80),
         },
     },
+    "don_shop": {
+        "default": {
+            "bg_image": "assets/images/backgrounds/don_shop.png",
+            "bgm_name": "clickarea_default",
+            "trail_color": (180, 180, 255),
+        },
+    },
     "brown_square": {
         "boss": {
             "bg_image": "assets/images/backgrounds/clickarea.png",

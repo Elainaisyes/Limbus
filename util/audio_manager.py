@@ -11,9 +11,9 @@ class Audio_Manager():
         self.current_track = None
         self.start_offset = 0.0
 
-    def play_sound(self, sound, volume = 1):
+    def play_sound(self, sound, volume = 1, loops=0):
         sound.set_volume(volume)
-        sound.play()
+        sound.play(loops=loops)
 
 
     #time.monotonic() used to calculate the amount of milliseconds elapsed since the last time position update.
@@ -30,8 +30,9 @@ class Audio_Manager():
         return track["last_position"] + elapsed
 
     def play_bgm(self, track_key, loops=-1, start=0.0, fade_ms=2000, resume=True):
-        if self.current_track == track_key and not pygame.mixer.music.get_busy() and resume:
-            pygame.mixer.music.unpause()
+        if self.current_track == track_key and resume:
+            if pygame.mixer.music.get_busy():
+                pygame.mixer.music.unpause()
             return
 
         if self.current_track and self.current_track != track_key:

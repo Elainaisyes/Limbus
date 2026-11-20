@@ -1,11 +1,16 @@
 import pygame
 from constants import WIDTH, HEIGHT
+from classes.areas.Area import Area
 from classes.ClickButton import ClickButton
 from util.lerp import lerp, lerp_color
 
-class Clickarea():
-    def __init__(self, game):
-        self.game = game
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from classes.Game import Game
+
+class Clickarea(Area):
+    def __init__(self, game: Game):
+        super().__init__(game)
         self.click_button_image = pygame.image.load("assets/images/dante_button.png").convert_alpha()
         self.click_button = ClickButton(self.click_button_image, WIDTH//2, HEIGHT//2, self.game.window, self.game, scale=1.5, area=self)
         self.coins_text_color = (255, 255, 80 if self.game.in_rush else 180)
